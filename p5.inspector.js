@@ -53,18 +53,27 @@ function startP5() {
     //link p5 canvas to myCanvas
     var s = new CanvasState(document.getElementById('defaultCanvas0'));
 
+    //add a code block that has several code container inside
+    var codeBlock = document.createElement("div");
+    codeBlock.id = 'codeBlock';
+    document.body.appendChild(codeBlock);
+    codeBlock.style.position = "absolute";
+    codeBlock.style.top = "100px";
+    codeBlock.style.left = "720px";
+
     //add code block and draw the code on canvas
     for(var i = 0; i < myShapes.length; i++){
       //draw shapes according to myShapes[]
       s.addShape(new Shape(s, myShapes[i].coordinates[0],myShapes[i].coordinates[1],
       myShapes[i].coordinates[2],myShapes[i].coordinates[3],'rgba(125,125,125,1)')); // The default is gray
-      //add code blocks
+
+      //add each code container
       var codeContainer = document.createElement("div");
       codeContainer.id = "codeContainer"+i;
       var codeContent = myShapes[i].type + "(" + myShapes[i].coordinates + ");";
       var code = document.createTextNode(codeContent);
       codeContainer.appendChild(code);
-      document.body.appendChild(codeContainer);
+      codeBlock.appendChild(codeContainer);
     }
   }
   window.draw = window.originaldraw;
@@ -291,7 +300,7 @@ function CanvasState(canvas){
   canvas.addEventListener('dblclick', function(e) {
     var mouse = myState.getMouse(e);
     //add new rect, green 20, 20
-    myState.addShape(new Shape(myState, mouse.x - 10, mouse.y - 10, 20, 20, 'rgba(0,255,0,.6)'));
+    myState.addShape(new Shape(myState, mouse.x - 10, mouse.y - 10, 40, 40, 'rgba(0,125,255,.6)'));
     //push new x, y, w, h to myShapes[]
     var newCoordinates = [mouse.x - 10, mouse.y - 10, 20, 20];
     myShapes.push({
@@ -300,15 +309,14 @@ function CanvasState(canvas){
     });
     //add a new code blocks
       var newCodeContainer = document.createElement("div");
-      debugger;
       var lastShapeIndex = myShapes.length - 1
       newCodeContainer.id = "codeContainer"+ lastShapeIndex.toString();
-      debugger;
       var newCodeContent = myShapes[myShapes.length - 1].type + "(" 
         + myShapes[myShapes.length - 1].coordinates + ");";
       var newCode = document.createTextNode(newCodeContent);
       newCodeContainer.appendChild(newCode);
-      document.body.appendChild(newCodeContainer);
+      var codeBlock = document.getElementById('codeBlock');
+      codeBlock.appendChild(newCodeContainer);
   }, true);
   
   // **** Options! ****
