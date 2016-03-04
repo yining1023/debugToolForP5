@@ -29,7 +29,7 @@ function modifyp5() {
     myShapes.push({
       type: 'triangle',
       coordinates: coordinates
-    })
+    });
     p5triangle.apply(window.p5, arguments);
   }
 
@@ -290,7 +290,25 @@ function CanvasState(canvas){
   // double click for making new shapes
   canvas.addEventListener('dblclick', function(e) {
     var mouse = myState.getMouse(e);
+    //add new rect, green 20, 20
     myState.addShape(new Shape(myState, mouse.x - 10, mouse.y - 10, 20, 20, 'rgba(0,255,0,.6)'));
+    //push new x, y, w, h to myShapes[]
+    var newCoordinates = [mouse.x - 10, mouse.y - 10, 20, 20];
+    myShapes.push({
+      type: 'rect',
+      coordinates: newCoordinates
+    });
+    //add a new code blocks
+      var newCodeContainer = document.createElement("div");
+      debugger;
+      var lastShapeIndex = myShapes.length - 1
+      newCodeContainer.id = "codeContainer"+ lastShapeIndex.toString();
+      debugger;
+      var newCodeContent = myShapes[myShapes.length - 1].type + "(" 
+        + myShapes[myShapes.length - 1].coordinates + ");";
+      var newCode = document.createTextNode(newCodeContent);
+      newCodeContainer.appendChild(newCode);
+      document.body.appendChild(newCodeContainer);
   }, true);
   
   // **** Options! ****
@@ -379,7 +397,7 @@ Shape.prototype.contains = function(mx, my) {
 
 CanvasState.prototype.addShape = function(shape) {
   this.shapes.push(shape);
-  this.valid = false;  
+  this.valid = false; 
 }
 
 
