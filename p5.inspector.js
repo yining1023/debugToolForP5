@@ -49,10 +49,23 @@ function startP5() {
   window.setup = function() {
     modifyp5();
     window.originalsetup();
+
+    //link p5 canvas to myCanvas
     var s = new CanvasState(document.getElementById('defaultCanvas0'));
 
-    s.addShape(new Shape(s, myShapes[0].coordinates[0],myShapes[0].coordinates[1],
-    myShapes[0].coordinates[2],myShapes[0].coordinates[3],'rgba(125,125,125,1)')); // The default is gray
+    //add code block and draw the code on canvas
+    for(var i = 0; i < myShapes.length; i++){
+      //draw shapes according to myShapes[]
+      s.addShape(new Shape(s, myShapes[i].coordinates[0],myShapes[i].coordinates[1],
+      myShapes[i].coordinates[2],myShapes[i].coordinates[3],'rgba(125,125,125,1)')); // The default is gray
+      //add code blocks
+      var codeContainer = document.createElement("div");
+      codeContainer.id = "codeContainer"+i;
+      var codeContent = myShapes[i].type + "(" + myShapes[i].coordinates + ");";
+      var code = document.createTextNode(codeContent);
+      codeContainer.appendChild(code);
+      document.body.appendChild(codeContainer);
+    }
   }
   window.draw = window.originaldraw;
 
@@ -390,6 +403,10 @@ CanvasState.prototype.draw = function() {
     l = shapes.length;
     for (var i = 0; i < l; i++) {
       var shape = shapes[i];
+      // console.log(shapes[i]);
+      myShapes[i].coordinates = [shapes[i].x, shapes[i].y, shapes[i].w, shapes[i].h];
+      // console.log(myShapes[i].coordinates);
+      document.getElementById('codeContainer'+i).innerHTML = myShapes[i].type+"(" + myShapes[i].coordinates + ");"
       // We can skip the drawing of elements that have moved off the screen:
       if (shape.x <= this.width && shape.y <= this.height &&
           shape.x + shape.w >= 0 && shape.y + shape.h >= 0){
