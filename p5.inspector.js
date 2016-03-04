@@ -321,7 +321,8 @@ function CanvasState(canvas){
   
   // **** Options! ****
   
-  this.selectionColor = '#CC0000';
+  this.selectionColor = '#FF00A8';
+  this.selectionColorLine = '#00fffc';
   this.selectionWidth = 2;
   this.selectionBoxSize = 6;
   this.selectionBoxColor = 'darkred';  
@@ -346,7 +347,26 @@ Shape.prototype.draw = function(ctx, optionalColor) {
   var i, cur, half;
   ctx.fillStyle = this.fill;
   ctx.fillRect(this.x, this.y, this.w, this.h);
+  //x
+  ctx.beginPath();
+  ctx.moveTo(0, this.y - 5);
+  ctx.lineTo(0, this.y + 5);
+  ctx.moveTo(0, this.y);
+  ctx.lineTo(this.x, this.y);
+  //y
+  ctx.lineTo(this.x, 0);
+  ctx.moveTo(this.x - 5, 0);
+  ctx.lineTo(this.x + 5, 0);
+
+  ctx.moveTo(this.x + this.w/2, this.y);
+  ctx.lineTo(this.x + this.w/2, this.y + this.h);
+
+  ctx.moveTo(this.x, this.y + this.h/2);
+  ctx.lineTo(this.x + this.w, this.y + this.h/2);
+
   if (this.state.selection === this) {
+    ctx.strokeStyle = this.state.selectionColorLine;
+    ctx.stroke();
     ctx.strokeStyle = this.state.selectionColor;
     ctx.lineWidth = this.state.selectionWidth;
     ctx.strokeRect(this.x,this.y,this.w,this.h);
@@ -407,7 +427,6 @@ CanvasState.prototype.addShape = function(shape) {
   this.shapes.push(shape);
   this.valid = false; 
 }
-
 
 CanvasState.prototype.clear = function() {
   this.ctx.clearRect(0, 0, this.width, this.height);

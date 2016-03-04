@@ -5,7 +5,7 @@ function setup() {
   // background(2);
   noStroke();
 
-  fill(200);
+  fill(125);
   rect(81, 81, 63, 63);
   rect(200, 81, 50, 100);
 
